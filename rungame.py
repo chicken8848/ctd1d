@@ -57,9 +57,10 @@ snail.dx = 0
 snail.dy = 1
 
 # draw pipe
-pipe = Sprite(0, GROUND_LEVEL+30, "coinss.gif")
-pipe.dx = -15
-pipe.dy = 0
+coins = Sprite(0, GROUND_LEVEL+30, "coinss.gif")
+coins.set_bounding_circle(100, 20)
+coins.dx = -15
+coins.dy = 0
 
 # draw goal
 goal = Sprite(500, GROUND_LEVEL + 100, "pooo.gif")
@@ -68,6 +69,7 @@ goal.dy = 0
 
 # draw player
 player = Sprite(-400, GROUND_LEVEL + 50, "huuman.gif")
+player.set_bounding_circle(100, 20)
 player.dx = 0
 player.dy = 1
 
@@ -80,7 +82,7 @@ def hide_all():
     pen.clear()
     pen.hideturtle()
     player.hideturtle()
-    pipe.hideturtle()
+    coins.hideturtle()
     goal.hideturtle()
     snail.hideturtle()
     start_message.hideturtle()
@@ -110,7 +112,7 @@ while running:
 
         # Keyboard binding
         wn.listen()
-        wn.onkeypress(go_up, "space")
+        wn.onkeypress(player.jump, "space")
 
     # Bottom Border
     if player.ycor() < GROUND_LEVEL + 50:
@@ -123,9 +125,10 @@ while running:
         player.sety(GROUND_LEVEL + 200)
 
     # Move Pipe 1
-    x = pipe.xcor()
-    x += pipe.dx
-    pipe.setx(x)
+    if not coins.destroyed:
+        x = coins.xcor()
+        x += coins.dx
+        coins.setx(x)
 
     # Move goal
     x = goal.xcor()
@@ -141,15 +144,22 @@ while running:
     #    high_score = player.score !!!
 
     # collision with pipe = game over
-    if (abs(pipe.xcor() - player.xcor()) < 100) and (player.ycor() - pipe.ycor() < 100):
+    """if (abs(pipe.xcor() - player.xcor()) < 100) and (player.ycor() - pipe.ycor() < 100):
         time.sleep(0.2)
         hide_all()
         wn.bgpic("scarysnail.png")
         pen.penup()
         pen.goto(0, 0)
-    # highscore pen.write(player.score, move=False, align="center", font=("Arial", 70, "normal")) !!!
+        """
 
-    # collision with goal = win
+    if player.collisions(coins) and not coins.destroyed:
+        player.ready = True
+        coins.destroy_actor()
+        player.score += 100
+
+        # highscore pen.write(player.score, move=False, align="center", font=("Arial", 70, "normal")) !!!
+
+        # collision with goal = win
     if (abs(goal.xcor() - player.xcor()) < 20) and (player.ycor() - goal.ycor() < 100):
         time.sleep(0.4)
         hide_all()

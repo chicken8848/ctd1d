@@ -21,6 +21,7 @@ class Sprite(turtle.Turtle):
         self.width = 0
         self.dy = 0
         self.ready = True
+        self.destroyed = False
 
     def set_bounding_circle(self, height, width):
         self.center = [self.xcor(), self.ycor()]
@@ -35,7 +36,7 @@ class Sprite(turtle.Turtle):
     def collisions(self, other):
         # returns bool
         distance = self.get_distance(other)
-        xdistance = distance*math.sin(self.angle(other))
+        xdistance = distance*math.cos(self.angle(other))
         ydistance = distance*math.sin(self.angle(other))
         hit = xdistance < (self.width/2 + other.width /
                            2) and ydistance < (self.height/2 + other.height/2)
@@ -48,6 +49,7 @@ class Sprite(turtle.Turtle):
 
     def destroy_actor(self):
         self.hideturtle()
+        self.destoyed = True
         return
 
     def jump(self):
