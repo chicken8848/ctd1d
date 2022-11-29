@@ -30,8 +30,12 @@ class Sprite(turtle.Turtle):
         return
 
     def angle(self, other):
-        theta = math.atan(self.ycor()-other.ycor())/(self.xcor()-other.xcor())
-        return theta
+        if (self.xcor()-other.xcor() == 0):
+            return math.pi/2
+        else:
+            theta = math.atan(self.ycor()-other.ycor()) / \
+                (self.xcor()-other.xcor())
+            return theta
 
     def collisions(self, other):
         # returns bool
