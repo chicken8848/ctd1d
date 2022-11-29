@@ -28,19 +28,6 @@ def start_game():
     start_game_fr()
 
 
-while not running:
-    screen = Screen()
-    start_message = turtle.Turtle()
-    start_message.hideturtle()
-    start_message.penup()
-    start_message.sety(160)
-    start_message.write("Press SPACE to start and jump",
-                        align="center", font=("Courier", 20, "bold"))
-
-    screen.onkeypress(start_game, 'space')
-    screen.listen()
-
-
 # score
 # draw ground
 GROUND_LEVEL = -120
@@ -201,5 +188,17 @@ def end_screen(actors, win):
         wn.bgpic("scarysnail.png")
     screen.onkeypress(start_game, 'space')
 
+
+while not running:
+    screen = Screen()
+    start_message = turtle.Turtle()
+    start_message.hideturtle()
+    start_message.penup()
+    start_message.sety(160)
+    start_message.write("Press SPACE to start and jump",
+                        align="center", font=("Courier", 20, "bold"))
+
+    screen.onkeypress(start_game, 'space')
+    screen.listen()
 
 wn.mainloop()
